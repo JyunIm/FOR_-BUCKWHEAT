@@ -29,39 +29,6 @@
             box-sizing: border-box;
         }
 
-        /* Modal specific styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #ccc;
-        }
 
         .copy-button {
             background-color: #4CAF50; /* Green */
@@ -85,39 +52,21 @@
         <img id="resultImg" class="mx-auto w-48 h-48 object-contain mb-6" src="image/marry.png" alt="Result Image A" />
         <div id="resultButtons" class="flex flex-col gap-4 mt-6">
             <button id="mainActionButton" class="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105">결혼할래요!</button>
-            <button id="shareTriggerButton" class="bg-pink-500 text-white px-6 py-3 rounded-full hover:bg-pink-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105">결과 공유하기</button>
-        </div>
-    </div>
-
-    <div id="shareModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeShareModal()">&times;</span>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800">결과 공유하기</h3>
-            <p class="text-md mb-4 text-gray-700">아래 버튼을 눌러 결과를 복사해서 짝꿍한테 알려주세요.</p>
-            <button class="copy-button w-full" onclick="copyResultToClipboard()">클립보드에 복사</button>
         </div>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('mainActionButton').onclick = () => alert("짝꿍과 행복하게 결혼하세요!");
-            document.getElementById('shareTriggerButton').onclick = openShareModal;
+            document.getElementById('mainActionButton').onclick = copyResultToClipboard => alert("짝꿍과 행복하게 결혼하세요! 이제 짝꿍에게 알려주세요!");
         });
 
-        function openShareModal() {
-            document.getElementById('shareModal').classList.remove('hidden');
-        }
-
-        function closeShareModal() {
-            document.getElementById('shareModal').classList.add('hidden');
-        }
 
         async function copyResultToClipboard() {
             const shareText = `[짝꿍 궁합 테스트 결과]\n짝꿍이 당신과의 결혼을 좋아합니다.`;
 
             try {
                 await navigator.clipboard.writeText(shareText);
-                alert("결과가 클립보드에 복사되었습니다!");
+                alert("결과가 클립보드에 복사되었습니다! 짝꿍한테 알려주세요!");
                 closeShareModal();
             } catch (err) {
                 console.error('Failed to copy text: ', err);
