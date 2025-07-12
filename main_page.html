@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>짝꿍 궁합 테스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
+    <script>
+        const questions = [
+            {
+                question: "소개팅을 받고 상대와 처음 만나게 된 당신.\n설렘과 어색함을 가지고 첫 만남 장소를 결정해야 되는데, 어디서 만나는 것이 좋은가요?",
+                answers: [
+                    { text: "아쿠아리움", type: "A" },
+                    { text: "산 정상", type: "B" }
+                ]
+            },
+            {
+                question: "소개팅 상대와 연애를 시작하게 된 당신.\n오늘은 처음으로 커플 아이템을 맞추기로 했습니다. 어떤 것이 좋을까요?",
+                answers: [
+                    { text: "돈이 최고, 커플 아이템 대신 현금", type: "B" },
+                    { text: "직접 만든 나무 반지", type: "A" }
+                ]
+            },
+            {
+                question: "짝꿍이 치킨을 시킨 후 당신에게 한 조각을 건냅니다. 어떤 부위인가요?",
+                answers: [
+                    { text: "닭목", type: "B" },
+                    { text: "닭다리", type: "A" }
+                ]
+            },
+            {
+                question: "이직 준비로 인해 힘들어하는 짝꿍을 당신은 어떻게 위로할건가요??",
+                answers: [
+                    { text: "짝꿍을 말없이 안아주며 등을 토닥여준다.", type: "A" },
+                    { text: "사회는 강한자만이 살아남는다! 이겨낼때까지 지켜본다.", type: "B" }
+                ]
+            },
+            {
+                question: "짝꿍과 결혼을 결심하게 된 당신, 두근두근 신혼여행지를 결정해야 합니다. 어디가 좋을까요?",
+                answers: [
+                    { text: "신혼여행하면 휴양지! 하와이로 가자!", type: "A" },
+                    { text: "더운건 싫어! 시원한 남극!", type: "B" }
+                ]
+            }
+        ];
+
+        const results = {
+            A: {
+                title: "너는 내 짝꿍 🥰",
+                desc: "당신의 짝꿍이 결혼해달라고 합니다. 짝꿍과 결혼해주실건가요?",
+                img: "images/love_active.png"
+            },
+            B: {
+                title: "당신은 메밀이 맞나요? 🤔",
+                desc: "아무래도 내가 알던 그 메밀이 아닌 것 같아요... 다시한번 해보시겠어요?",
+                img: "images/love_calm.png"
+            }
+        };
+
+        let currentQuestionIndex = 0;
+        let answersCount = {};
+
+
+        // 일반 질문 표시 함수
+        function showQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById('question').innerText = q.question;
+            const answerBox = document.getElementById('answers');
+            answerBox.innerHTML = '';
+
+            q.answers.forEach(a => {
+                const btn = document.createElement('button');
+                btn.innerText = a.text;
+                btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100';
+                btn.onclick = () => selectAnswer(a.type);
+                answerBox.appendChild(btn);
+            });
+        }
+
+        // 답변 선택 함수
+        function selectAnswer(type) {
+            answersCount[type] = (answersCount[type] || 0) + 1;
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        // 결과 표시 함수
+        function showResult() {
+            document.getElementById('questionBox').classList.add('hidden');
+            document.getElementById('resultBox').classList.remove('hidden');
+
+            const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
+            const result = results[resultType];
+
+            document.getElementById('resultTitle').innerText = result.title;
+            document.getElementById('resultDesc').innerText = result.desc;
+            document.getElementById('resultImg').src = result.img;
+        }
+    </script> -->
+</body>
+</html>
