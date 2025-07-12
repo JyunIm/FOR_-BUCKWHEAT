@@ -5,15 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>짝꿍 궁합 테스트</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden { display: none; }
+        /* Optional: Add a subtle background to the body if you don't have one globally */
+        body {
+            /* background-color: #ffe4e6; /* light pink */ */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Style for the question box to make it stand out over the background */
+        #questionBox, #resultBox {
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 1rem; /* Add some margin around the box */
+            width: 90%; /* Make it take more width on smaller screens */
+            max-width: 600px; /* Limit max width for larger screens */
+        }
+
+        /* Style for the answer buttons with images */
+        #answers button {
+            width: 100%; /* Make buttons span full width of their container */
+            padding: 1.5rem 1rem; /* Adjust padding for content inside */
+            margin-bottom: 0.75rem; /* Space between buttons */
+            text-align: center;
+        }
+    </style>
 </head>
-<body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
+<body class="bg-pink-50 text-center">
+    <div id="questionBox" class="p-6 max-w-lg">
+        <h2 id="question" class="text-2xl font-bold mb-8 text-gray-800 whitespace-pre-line"></h2>
+        <div id="answers" class="flex flex-col space-y-4"></div> </div>
+
+    <div id="resultBox" class="hidden p-6 max-w-lg">
+        <h2 id="resultTitle" class="text-3xl font-bold mb-4 text-pink-600"></h2>
+        <p id="resultDesc" class="text-lg mb-6 text-gray-700"></p>
+        <img id="resultImg" class="mx-auto w-48 h-48 object-contain mb-6" alt="Result Image" />
+        <button onclick="location.reload()" class="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105">다시 하기</button>
+    </div>
+    
     <script>
         const questions = [
             {
                 question: "소개팅을 받고 상대와 처음 만나게 된 당신.\n설렘과 어색함을 가지고 첫 만남 장소를 결정해야 되는데, 어디서 만나는 것이 좋은가요?",
                 answers: [
-                    { text: "아쿠아리움", type: "A" },
-                    { text: "산 정상", type: "B" }
+                    { text: "아쿠아리움", type: "A", image: "images/aquarium.png" },
+                    { text: "산 정상", type: "B", image: "images/mountain.png" }
                 ]
             },
             {
@@ -49,32 +93,46 @@
         const results = {
             A: {
                 title: "너는 내 짝꿍 🥰",
-                desc: "당신의 짝꿍이 결혼해달라고 합니다. 짝꿍과 결혼해주실건가요?",
-                img: "images/love_active.png"
+                desc: "당신의 짝꿍이 결혼해달라고 합니다. 짝꿍과 결혼해주실건가요?"
             },
             B: {
                 title: "당신은 메밀이 맞나요? 🤔",
-                desc: "아무래도 내가 알던 그 메밀이 아닌 것 같아요... 다시한번 해보시겠어요?",
-                img: "images/love_calm.png"
+                desc: "아무래도 내가 알던 그 메밀이 아닌 것 같아요... 다시한번 해보시겠어요?"
             }
         };
 
         let currentQuestionIndex = 0;
         let answersCount = {};
 
+        // Call showQuestion to display the first question when the page loads
+        document.addEventListener('DOMContentLoaded', showQuestion);
+
 
         // 일반 질문 표시 함수
         function showQuestion() {
             const q = questions[currentQuestionIndex];
-            document.getElementById('question').innerText = q.question;
+            document.getElementById('question').innerHTML = q.question.replace(/\n/g, '<br>';
             const answerBox = document.getElementById('answers');
             answerBox.innerHTML = '';
 
             q.answers.forEach(a => {
                 const btn = document.createElement('button');
-                btn.innerText = a.text;
-                btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100';
+                btn.className = 'bg-white border px-4 py-3 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105';
                 btn.onclick = () => selectAnswer(a.type);
+                
+                if (a.image) { // Check if an image path exists for this answer
+                    const img = document.createElement('img');
+                    img.src = a.image;
+                    img.alt = a.text; // Alt text for accessibility
+                    img.className = 'w-24 h-24 object-contain mb-2'; // Adjust w- and h- for image size
+                    btn.appendChild(img);
+                }
+
+                const textSpan = document.createElement('span');
+                textSpan.innerText = a.text;
+                textSpan.className = 'font-semibold text-lg'; // Adjust text size as needed
+                btn.appendChild(textSpan);
+                
                 answerBox.appendChild(btn);
             });
         }
@@ -103,6 +161,6 @@
             document.getElementById('resultDesc').innerText = result.desc;
             document.getElementById('resultImg').src = result.img;
         }
-    </script> -->
+    </script>
 </body>
 </html>
