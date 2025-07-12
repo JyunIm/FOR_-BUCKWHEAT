@@ -83,7 +83,10 @@
         <h2 id="resultTitle" class="text-3xl font-bold mb-4 text-pink-600"></h2>
         <p id="resultDesc" class="text-lg mb-6 text-gray-700"></p>
         <img id="resultImg" class="mx-auto w-48 h-48 object-contain mb-6" alt="Result Image" />
-        <button id="resultActionButton" class="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105"></button>
+        <div id="resultButtons" class="flex flex-col gap-4 mt-6">
+            <button id="mainActionButton" class="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105"></button>
+            <button id="shareTriggerButton" class="bg-pink-500 text-white px-6 py-3 rounded-full hover:bg-pink-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105 hidden">결과 공유하기</button>
+        </div>
     </div>
 
     <div id="shareModal" class="modal hidden">
@@ -118,29 +121,31 @@
             if (currentResultType) {
                 displayResult(currentResultType);
             } else {
-                // Fallback if no result type is found (e.g., accessed directly)
-                displayResult('B'); // Default to B or redirect back to index.html
-                console.warn("No quiz result found in localStorage. Displaying default or redirecting.");
-                // Optionally, redirect back to the quiz start:
-                window.location.href = 'index.html';
+                // Fallback if no result type is found
+                console.warn("No quiz result found in localStorage. Redirecting to index.html.");
+                window.location.href = 'index.html'; // Always redirect if no result
             }
         });
 
         function displayResult(resultType) {
             const result = results[resultType];
-            const resultActionButton = document.getElementById('resultActionButton');
+            const mainActionButton = document.getElementById('mainActionButton');
+            const shareTriggerButton = document.getElementById('shareTriggerButton');
 
             document.getElementById('resultTitle').innerText = result.title;
             document.getElementById('resultDesc').innerText = result.desc;
             document.getElementById('resultImg').src = result.img;
 
             if (resultType === 'A') {
-                resultActionButton.innerText = "결과 공유하기";
-                resultActionButton.onclick = openShareModal;
+                mainActionButton.innerText = "결혼할래요!"; // A new action for the main button
+                mainActionButton.onclick = () => alert("짝꿍과 행복하게 결혼하세요!"); // Or any other specific action
+                
+                shareTriggerButton.classList.remove('hidden'); // Show the dedicated share button
+                shareTriggerButton.onclick = openShareModal; // This button now opens the modal
             } else {
-                resultActionButton.innerText = "다시 하기";
-                // Go back to the quiz page (index.html)
-                resultActionButton.onclick = () => window.location.href = 'index.html'; 
+                mainActionButton.innerText = "다시 하기";
+                mainActionButton.onclick = () => window.location.href = 'index.html'; 
+                shareTriggerButton.classList.add('hidden'); // Ensure share button is hidden for B
             }
         }
 
@@ -157,7 +162,7 @@
             const resultDesc = document.getElementById('resultDesc').innerText;
             // Use window.location.origin to get the base URL for the quiz page
             const quizUrl = window.location.origin + '/index.html'; 
-            const shareText = `[짝꿍 궁합 테스트 결과]\n짝꿍이 당신과의 결혼을 좋아합니다.`;
+            const shareTextForA = `[짝꿍 궁합 테스트 결과]\n짝꿍이 당신과의 결혼을 좋아합니다.`;
 
             try {
                 await navigator.clipboard.writeText(shareText);
