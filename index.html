@@ -9,7 +9,7 @@
         .hidden { display: none; }
         /* 시작 페이지 배경 이미지 스타일 */
         #start {
-            background-image: url('images/intro_image.png'); /* 여기에 배경 이미지 경로를 넣어주세요 */
+            background-image: url('image/intro_image.png'); /* 여기에 배경 이미지 경로를 넣어주세요 */
             background-size: cover;
             background-position: center;
             display: flex; /* Flexbox를 사용하여 내용 중앙 정렬 */
@@ -21,19 +21,19 @@
             color: white; /* 텍스트 색상을 이미지에 맞춰 조정 */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 텍스트 가독성을 높이기 위한 그림자 */
         }
-        /* 플로팅 버튼 스타일 */
-        #start .floating-button {
+        /* 수정된 버튼 스타일 */
+        #start .start-button {
             background-color: white; /* 흰색 배경 */
-            color: #ef4444; /* 핑크색 텍스트 (tailwindcss pink-500) */
+            color: black; /* 글씨색 검정 */
             padding: 1rem 2.5rem; /* 패딩 증가 */
-            border-radius: 9999px; /* 완전한 원형 (pill shape) */
+            border-radius: 0.5rem; /* 라운드 모서리 (Tailwind CSS: rounded-lg) */
             font-size: 1.25rem; /* 글자 크기 증가 */
             font-weight: bold; /* 글자 두껍게 */
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* 그림자 추가 */
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             margin-top: 2rem; /* 이미지와 버튼 사이 간격 */
         }
-        #start .floating-button:hover {
+        #start .start-button:hover {
             transform: translateY(-5px); /* 호버 시 살짝 위로 뜨는 효과 */
             box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* 호버 시 그림자 진하게 */
         }
@@ -48,9 +48,9 @@
     <div id="start" class="p-6">
         <h1 class="text-4xl font-bold mb-4">나와 짝꿍의 궁합은?</h1>
         <p class="text-lg mb-8">10개의 질문으로 알아보는 당신의 연애 스타일!</p>
-        <button onclick="startTest()" class="floating-button">시작하기</button>
+        <button onclick="location.href='first_question_page.html'" class="start-button">시작하기</button>
     </div>
-
+<!-- 
     <div id="firstQuestionBox" class="hidden p-6 max-w-lg">
         <h2 class="text-xl font-semibold mb-6 text-gray-800">한글로 이름을 입력해주세요.</h2>
         <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요." class="w-full p-3 border border-gray-300 rounded-md mb-4 text-center">
@@ -138,32 +138,32 @@
             }
         };
 
-        let currentQuestionIndex = 0; // 질문 인덱스
-        let answersCount = {}; // 답변 타입 카운트
+        let currentQuestionIndex = 0;
+        let answersCount = {};
 
-        // 테스트 시작 함수
-        function startTest() {
-            document.getElementById('start').classList.add('hidden');
-            document.getElementById('firstQuestionBox').classList.remove('hidden');
-        }
+        // startTest() 함수는 이제 버튼 클릭 시 직접 URL로 이동하도록 변경되었습니다.
+        // 이 함수는 더 이상 `firstQuestionBox`를 표시하지 않습니다.
+        // function startTest() {
+        //     document.getElementById('start').classList.add('hidden');
+        //     document.getElementById('firstQuestionBox').classList.remove('hidden');
+        // }
 
         // 첫 번째 질문 (이름) 확인 함수
         function checkFirstAnswer() {
             const userAnswer = document.getElementById('firstAnswerInput').value.trim();
             const messageElement = document.getElementById('firstQuestionMessage');
 
-            // 이름을 '조아라'로 설정했습니다. 필요에 따라 변경하세요.
-            if (userAnswer === "조아라") {
+            if (userAnswer === "조아라") { // 이름을 '조아라'로 설정했습니다.
                 document.getElementById('firstQuestionBox').classList.add('hidden');
                 document.getElementById('questionBox').classList.remove('hidden');
-                currentQuestionIndex = 0; // 본 질문 배열의 첫 질문부터 시작
+                currentQuestionIndex = 0;
                 showQuestion();
             } else {
                 messageElement.textContent = "입력하신 이름으로는 테스트를 진행할 수 없습니다.";
                 setTimeout(() => {
                     document.getElementById('firstQuestionBox').classList.add('hidden');
                     document.getElementById('wrongAnswerBox').classList.remove('hidden');
-                }, 1000); // 1초 후 오답 페이지로 이동
+                }, 1000);
             }
         }
 
@@ -172,7 +172,7 @@
             const q = questions[currentQuestionIndex];
             document.getElementById('question').innerText = q.question;
             const answerBox = document.getElementById('answers');
-            answerBox.innerHTML = ''; // 이전 답변 버튼 제거
+            answerBox.innerHTML = '';
 
             q.answers.forEach(a => {
                 const btn = document.createElement('button');
@@ -186,12 +186,12 @@
         // 답변 선택 함수
         function selectAnswer(type) {
             answersCount[type] = (answersCount[type] || 0) + 1;
-            currentQuestionIndex++; // 다음 질문으로 이동
+            currentQuestionIndex++;
 
             if (currentQuestionIndex < questions.length) {
                 showQuestion();
             } else {
-                showResult(); // 모든 질문 완료 시 결과 표시
+                showResult();
             }
         }
 
@@ -200,7 +200,6 @@
             document.getElementById('questionBox').classList.add('hidden');
             document.getElementById('resultBox').classList.remove('hidden');
 
-            // 가장 많이 선택된 타입 찾기
             const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
             const result = results[resultType];
 
@@ -208,6 +207,6 @@
             document.getElementById('resultDesc').innerText = result.desc;
             document.getElementById('resultImg').src = result.img;
         }
-    </script>
+    </script> -->
 </body>
 </html>
