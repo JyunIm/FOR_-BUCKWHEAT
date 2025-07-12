@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>짝꿍 궁합 테스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden { display: none; }
+        /* 시작 페이지 배경 이미지 스타일 */
+        #start {
+            background-image: url('image/intro_image.png'); /* 여기에 배경 이미지 경로를 넣어주세요 */
+            background-size: cover;
+            background-position: center;
+            display: flex; /* Flexbox를 사용하여 내용 중앙 정렬 */
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh; /* 전체 화면 높이 */
+            color: white; /* 텍스트 색상을 이미지에 맞춰 조정 */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 텍스트 가독성을 높이기 위한 그림자 */
+            padding-bottom: 2rem;
+        }
+        /* 수정된 버튼 스타일 */
+        #start .start-button {
+            background-color: white; /* 흰색 배경 */
+            color: black; /* 글씨색 검정 */
+            padding: 1rem 2.5rem; /* 패딩 증가 */
+            border-radius: 0.5rem; /* 라운드 모서리 (Tailwind CSS: rounded-lg) */
+            font-size: 1.25rem; /* 글자 크기 증가 */
+            font-weight: bold; /* 글자 두껍게 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* 그림자 추가 */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 2rem; /* 이미지와 버튼 사이 간격 */
+        }
+        #start .start-button:hover {
+            transform: translateY(-5px); /* 호버 시 살짝 위로 뜨는 효과 */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* 호버 시 그림자 진하게 */
+        }
+        /* 기존 body 스타일은 유지 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
+    <div id="firstQuestionBox" class="hidden p-6 max-w-lg">
+        <h2 class="text-xl font-semibold mb-6 text-gray-800">한글로 이름을 입력해주세요.</h2>
+        <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요." class="w-full p-3 border border-gray-300 rounded-md mb-4 text-center">
+        <button onclick="checkFirstAnswer()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">다음</button>
+        <p id="firstQuestionMessage" class="mt-4 text-red-500"></p>
+    </div>
+
+    <div id="questionBox" class="hidden p-6 max-w-lg">
+        <h2 id="question" class="text-xl font-semibold mb-6 text-gray-800"></h2>
+        <div id="answers" class="flex flex-col space-y-3"></div>
+    </div>
+
+    <div id="wrongAnswerBox" class="hidden p-6 max-w-lg">
+        <h2 class="text-2xl font-bold mb-4 text-red-600">대상이 아닙니다</h2>
+        <p class="mb-6 text-gray-700">죄송하지만 이 테스트는 해당하지 않습니다.</p>
+        <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
+    </div>
+
+    <div id="resultBox" class="hidden p-6 max-w-lg">
+        <h2 id="resultTitle" class="text-2xl font-bold mb-4 text-pink-600"></h2>
+        <p id="resultDesc" class="mb-4 text-gray-700"></p>
+        <img id="resultImg" class="mx-auto w-40 h-40 object-contain" />
+        <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
+    </div>
+
+    <script>
+
+        // 첫 번째 질문 (이름) 확인 함수
+        function checkFirstAnswer() {
+            const userAnswer = document.getElementById('firstAnswerInput').value.trim();
+            const messageElement = document.getElementById('firstQuestionMessage');
+
+            if (userAnswer === "조아라") { // 이름을 '조아라'로 설정했습니다.
+                window.location.href = 'second_question_page.html';
+            } else {
+                messageElement.textContent = "입력하신 이름으로는 테스트를 진행할 수 없습니다.";
+                setTimeout(() => {
+                    document.getElementById('firstQuestionBox').classList.add('hidden');
+                    document.getElementById('wrongAnswerBox').classList.remove('hidden');
+                }, 1000);
+            }
+        }
+
+        // 일반 질문 표시 함수
+        function showQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById('question').innerText = q.question;
+            const answerBox = document.getElementById('answers');
+            answerBox.innerHTML = '';
+
+            q.answers.forEach(a => {
+                const btn = document.createElement('button');
+                btn.innerText = a.text;
+                btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100';
+                btn.onclick = () => selectAnswer(a.type);
+                answerBox.appendChild(btn);
+            });
+        }
+
+        // 답변 선택 함수
+        function selectAnswer(type) {
+            answersCount[type] = (answersCount[type] || 0) + 1;
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        // 결과 표시 함수
+        function showResult() {
+            document.getElementById('questionBox').classList.add('hidden');
+            document.getElementById('resultBox').classList.remove('hidden');
+
+            const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
+            const result = results[resultType];
+
+            document.getElementById('resultTitle').innerText = result.title;
+            document.getElementById('resultDesc').innerText = result.desc;
+            document.getElementById('resultImg').src = result.img;
+        }
+    </script>
+</body>
+</html>
