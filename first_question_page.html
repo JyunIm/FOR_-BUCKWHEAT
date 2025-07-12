@@ -21,11 +21,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        #firstQuestionBox {
+        .centered-box {
             background-color: rgba(255, 255, 255, 0.75);
             padding: 2rem;
             border-radius: 1.5rem;
@@ -34,9 +33,10 @@
             color: #4B2E2E;
             max-width: 400px;
             width: 90%;
+            text-align: center;
         }
 
-        #firstAnswerInput {
+        input[type="text"] {
             background-color: rgba(255,255,255,0.95);
             border: 1px solid #d1d5db;
             border-radius: 0.75rem;
@@ -47,17 +47,11 @@
             color: #333;
         }
 
-        #firstAnswerInput::placeholder {
+        input[type="text"]::placeholder {
             color: #999;
         }
 
-        #firstQuestionBox h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        #firstQuestionBox button {
+        button {
             background-color: #f472b6;
             color: white;
             padding: 0.75rem 1.5rem;
@@ -68,35 +62,35 @@
             margin-top: 1rem;
         }
 
-        #firstQuestionBox button:hover {
+        button:hover {
             background-color: #ec4899;
         }
     </style>
 </head>
 <body>
-    <div id="firstQuestionBox">
+    <div id="firstQuestionBox" class="centered-box">
         <h2>한글로 이름을 입력해주세요.</h2>
         <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요.">
         <button onclick="checkFirstAnswer()">다음</button>
         <p id="firstQuestionMessage" class="mt-4 text-red-600 text-sm"></p>
     </div>
 
-    <div id="questionBox" class="hidden p-6 max-w-lg">
+    <div id="questionBox" class="hidden centered-box">
         <h2 id="question" class="text-xl font-semibold mb-6 text-gray-800"></h2>
-        <div id="answers" class="flex flex-col space-y-3"></div>
+        <div id="answers" class="flex flex-col space-y-3 items-center"></div>
     </div>
 
-    <div id="wrongAnswerBox" class="hidden p-6 max-w-lg">
+    <div id="wrongAnswerBox" class="hidden centered-box">
         <h2 class="text-2xl font-bold mb-4 text-red-600">대상이 아닙니다</h2>
         <p class="mb-6 text-gray-700">죄송하지만 이 테스트는 해당하지 않습니다.</p>
-        <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
+        <button onclick="location.reload()">다시 하기</button>
     </div>
 
-    <div id="resultBox" class="hidden p-6 max-w-lg">
+    <div id="resultBox" class="hidden centered-box">
         <h2 id="resultTitle" class="text-2xl font-bold mb-4 text-pink-600"></h2>
         <p id="resultDesc" class="mb-4 text-gray-700"></p>
         <img id="resultImg" class="mx-auto w-40 h-40 object-contain" />
-        <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
+        <button onclick="location.reload()">다시 하기</button>
     </div>
 
     <script>
@@ -129,7 +123,7 @@
             q.answers.forEach(a => {
                 const btn = document.createElement('button');
                 btn.innerText = a.text;
-                btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100';
+                btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100 mt-2';
                 btn.onclick = () => selectAnswer(a.type);
                 answerBox.appendChild(btn);
             });
