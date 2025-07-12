@@ -7,9 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .hidden { display: none; }
-        /* 시작 페이지 배경 이미지 스타일 */
+
         body {
-            font-family:Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             background-image: url('image/intro_image.png');
             background-size: cover;
@@ -25,38 +25,60 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* 수정된 버튼 스타일 */
-        #start .start-button {
-            background-color: white; /* 흰색 배경 */
-            color: black; /* 글씨색 검정 */
-            padding: 1rem 2.5rem; /* 패딩 증가 */
-            border-radius: 0.5rem; /* 라운드 모서리 (Tailwind CSS: rounded-lg) */
-            font-size: 1.25rem; /* 글자 크기 증가 */
-            font-weight: bold; /* 글자 두껍게 */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* 그림자 추가 */
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            width: 100%;
-            max-width: 400px;
-            margin-top: 2rem; /* 이미지와 버튼 사이 간격 */
-        }
-        #start .start-button:hover {
-            transform: translateY(-5px); /* 호버 시 살짝 위로 뜨는 효과 */
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* 호버 시 그림자 진하게 */
-        }
         #firstQuestionBox {
-            background-color: rgba(255,255,255,0.9);
+            background-color: rgba(255, 255, 255, 0.75);
             padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            backdrop-filter: blur(6px);
+            color: #4B2E2E;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        #firstAnswerInput {
+            background-color: rgba(255,255,255,0.95);
+            border: 1px solid #d1d5db;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            text-align: center;
+            width: 100%;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        #firstAnswerInput::placeholder {
+            color: #999;
+        }
+
+        #firstQuestionBox h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        #firstQuestionBox button {
+            background-color: #f472b6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        #firstQuestionBox button:hover {
+            background-color: #ec4899;
         }
     </style>
 </head>
-<body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
-    <div id="firstQuestionBox" class="p-6 max-w-lg">
-        <h2 class="text-xl font-semibold mb-6 text-gray-800">한글로 이름을 입력해주세요.</h2>
-        <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요." class="w-full p-3 border border-gray-300 rounded-md mb-4 text-center">
-        <button onclick="checkFirstAnswer()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">다음</button>
-        <p id="firstQuestionMessage" class="mt-4 text-red-500"></p>
+<body>
+    <div id="firstQuestionBox">
+        <h2>한글로 이름을 입력해주세요.</h2>
+        <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요.">
+        <button onclick="checkFirstAnswer()">다음</button>
+        <p id="firstQuestionMessage" class="mt-4 text-red-600 text-sm"></p>
     </div>
 
     <div id="questionBox" class="hidden p-6 max-w-lg">
@@ -78,13 +100,11 @@
     </div>
 
     <script>
-
-        // 첫 번째 질문 (이름) 확인 함수
         function checkFirstAnswer() {
             const userAnswer = document.getElementById('firstAnswerInput').value.trim();
             const messageElement = document.getElementById('firstQuestionMessage');
 
-            if (userAnswer === "조아라") { // 이름을 '조아라'로 설정했습니다.
+            if (userAnswer === "조아라") {
                 window.location.href = 'second_question_page.html';
             } else {
                 messageElement.textContent = "입력하신 이름으로는 테스트를 진행할 수 없습니다.";
@@ -95,7 +115,11 @@
             }
         }
 
-        // 일반 질문 표시 함수
+        const questions = [];
+        const results = {};
+        let currentQuestionIndex = 0;
+        let answersCount = {};
+
         function showQuestion() {
             const q = questions[currentQuestionIndex];
             document.getElementById('question').innerText = q.question;
@@ -111,7 +135,6 @@
             });
         }
 
-        // 답변 선택 함수
         function selectAnswer(type) {
             answersCount[type] = (answersCount[type] || 0) + 1;
             currentQuestionIndex++;
@@ -123,7 +146,6 @@
             }
         }
 
-        // 결과 표시 함수
         function showResult() {
             document.getElementById('questionBox').classList.add('hidden');
             document.getElementById('resultBox').classList.remove('hidden');
