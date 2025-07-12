@@ -9,7 +9,7 @@
         .hidden { display: none; }
         /* Optional: Add a subtle background to the body if you don't have one globally */
         body {
-            /* background-color: #ffe4e6; /* light pink */ */
+            background-color: white; /* light pink */
             font-family: Arial, sans-serif;
             margin: 0;
             display: flex;
@@ -28,21 +28,14 @@
             margin: 1rem; /* Add some margin around the box */
             width: 90%; /* Make it take more width on smaller screens */
             max-width: 600px; /* Limit max width for larger screens */
-        }
-
-        /* Style for the answer buttons with images */
-        #answers button {
-            width: 100%; /* Make buttons span full width of their container */
-            padding: 1.5rem 1rem; /* Adjust padding for content inside */
-            margin-bottom: 0.75rem; /* Space between buttons */
-            text-align: center;
+            box-sizing: border-box;
         }
     </style>
 </head>
-<body class="bg-pink-50 text-center">
+<body class="text-center">
     <div id="questionBox" class="p-6 max-w-lg">
         <h2 id="question" class="text-2xl font-bold mb-8 text-gray-800 whitespace-pre-line"></h2>
-        <div id="answers" class="flex flex-col space-y-4"></div> </div>
+        <div id="answers" class="flex flex-row flex-wrap justify-center gap-4"></div> </div>
 
     <div id="resultBox" class="hidden p-6 max-w-lg">
         <h2 id="resultTitle" class="text-3xl font-bold mb-4 text-pink-600"></h2>
@@ -106,9 +99,7 @@
         let currentQuestionIndex = 0;
         let answersCount = {};
 
-        // Call showQuestion to display the first question when the page loads
         document.addEventListener('DOMContentLoaded', showQuestion);
-
 
         // 일반 질문 표시 함수
         function showQuestion() {
@@ -119,14 +110,14 @@
 
             q.answers.forEach(a => {
                 const btn = document.createElement('button');
-                btn.className = 'bg-white border px-4 py-3 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105';
+                btn.className = 'bg-white border px-4 py-3 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105 w-full md:w-[calc(50%-0.5rem)]';
                 btn.onclick = () => selectAnswer(a.type);
                 
-                if (a.image) { // Check if an image path exists for this answer
+                if (a.image) { 
                     const img = document.createElement('img');
                     img.src = a.image;
-                    img.alt = a.text; // Alt text for accessibility
-                    img.className = 'w-24 h-24 object-contain mb-2'; // Adjust w- and h- for image size
+                    img.alt = a.text;
+                    img.className = 'w-24 h-24 object-contain mb-2'; 
                     btn.appendChild(img);
                 }
 
