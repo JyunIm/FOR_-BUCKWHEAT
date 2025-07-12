@@ -29,6 +29,43 @@
             width: 90%; /* Make it take more width on smaller screens */
             max-width: 600px; /* Limit max width for larger screens */
             box-sizing: border-box;
+            min-height: 400px; /* Adjust this value as needed for desired height */
+            display: flex; /* Use flexbox for vertical centering of content */
+            flex-direction: column;
+            justify-content: space-between; /* Space out question and answers */
+            align-items: center;
+        }
+
+        /* Styles for the answer buttons */
+        #answers {
+            flex-direction: column; /* Stack buttons vertically */
+            width: 100%; /* Make buttons take full width of the question box */
+            gap: 1rem; /* Increase space between vertically stacked buttons */
+        }
+
+        #answers button {
+            width: 100%; /* Ensure buttons span full width */
+            /* Increased vertical padding to make buttons taller */
+            padding-top: 2rem; /* Adjust as needed */
+            padding-bottom: 2rem; /* Adjust as needed */
+            height: auto; /* Allow content to dictate height, but padding will make it tall */
+            display: flex; /* Ensure inner content (image, text) is centered */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #answers button img {
+            margin-bottom: 0.75rem; /* Slightly more space between image and text */
+        }
+
+        #question {
+            /* Ensure question text takes up appropriate space */
+            flex-grow: 1; /* Allow question to take available space */
+            display: flex; /* Use flex to center text vertically if needed */
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 1rem; /* Add some padding below the question */
         }
     </style>
 </head>
@@ -133,7 +170,7 @@
                     const img = document.createElement('img');
                     img.src = a.image;
                     img.alt = a.text;
-                    img.className = 'w-20 h-20 object-contain mb-2'; 
+                    img.className = 'w-20 h-28 object-contain mb-2'; 
                     btn.appendChild(img);
                 }
 
