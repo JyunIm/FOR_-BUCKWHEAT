@@ -37,12 +37,6 @@
         <h2 id="question" class="text-base font-bold mb-8 text-gray-800 whitespace-pre-line"></h2>
         <div id="answers" class="flex flex-row justify-center gap-2 sm:gap-4"></div> </div>
 
-    <div id="resultBox" class="hidden p-6 max-w-lg">
-        <h2 id="resultTitle" class="text-3xl font-bold mb-4 text-pink-600"></h2>
-        <p id="resultDesc" class="text-lg mb-6 text-gray-700"></p>
-        <img id="resultImg" class="mx-auto w-48 h-48 object-contain mb-6" alt="Result Image" />
-        <button onclick="location.reload()" class="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105">Yes</button>
-    </div>
     
     <script>
         const questions = [
@@ -118,18 +112,6 @@
             }
         ];
 
-        const results = {
-            A: {
-                title: "너는 내 짝꿍 🥰",
-                desc: "당신의 짝꿍이 결혼해달라고 합니다. 짝꿍과 결혼해 주실 건가요?",
-                img: "image/marry.png"
-            },
-            B: {
-                title: "당신은 메밀이 맞나요? 🤔",
-                desc: "아무래도 내가 알던 그 메밀이 아닌 것 같아요... 다시 한번 해보시겠어요?"
-            }
-        };
-
         let currentQuestionIndex = 0;
         let answersCount = {};
 
@@ -172,22 +154,18 @@
             if (currentQuestionIndex < questions.length) {
                 showQuestion();
             } else {
-                showResult();
+                // All questions answered, calculate result and redirect
+                const resultEntries = Object.entries(answersCount);
+                const resultType = resultEntries.length > 0 ? resultEntries.sort((a,b) => b[1] - a[1])[0][0] : 'B';
+                
+                // Store the result type in localStorage for the new page to retrieve
+                localStorage.setItem('quizResultType', resultType);
+
+                // Redirect to the result page
+                window.location.href = 'result.html';
             }
         }
 
-        // 결과 표시 함수
-        function showResult() {
-            document.getElementById('questionBox').classList.add('hidden');
-            document.getElementById('resultBox').classList.remove('hidden');
-
-            const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
-            const result = results[resultType];
-
-            document.getElementById('resultTitle').innerText = result.title;
-            document.getElementById('resultDesc').innerText = result.desc;
-            document.getElementById('resultImg').src = result.img;
-        }
     </script>
 </body>
 </html>
