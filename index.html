@@ -14,12 +14,13 @@
             background-position: center;
             display: flex; /* Flexbox를 사용하여 내용 중앙 정렬 */
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
             width: 100%;
             min-height: 100vh; /* 전체 화면 높이 */
             color: white; /* 텍스트 색상을 이미지에 맞춰 조정 */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 텍스트 가독성을 높이기 위한 그림자 */
+            padding-bottom: 2rem;
         }
         /* 수정된 버튼 스타일 */
         #start .start-button {
@@ -31,6 +32,8 @@
             font-weight: bold; /* 글자 두껍게 */
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* 그림자 추가 */
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            width: 100%;
+            max-width: 400px;
             margin-top: 2rem; /* 이미지와 버튼 사이 간격 */
         }
         #start .start-button:hover {
