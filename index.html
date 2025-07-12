@@ -1,140 +1,179 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>연애 심리 테스트</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    .hidden { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>짝꿍 궁합 테스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
-  <div id="start" class="p-6">
-    <h1 class="text-3xl font-bold text-pink-600 mb-4">나의 연애 성향은?</h1>
-    <p class="mb-4 text-gray-700">10개의 질문으로 알아보는 당신의 연애 스타일!</p>
-    <button onclick="startTest()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">테스트 시작하기</button>
-  </div>
+    <div id="start" class="p-6">
+        <h1 class="text-3xl font-bold text-pink-600 mb-4">나와 짝꿍의 궁합은?</h1>
+        <p class="mb-4 text-gray-700">10개의 질문으로 알아보는 당신의 연애 스타일!</p>
+        <button onclick="startTest()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">시작하기</button>
+    </div>
 
-  <div id="questionBox" class="hidden p-6 max-w-lg">
-    <h2 id="question" class="text-xl font-semibold mb-6 text-gray-800"></h2>
-    <div id="answers" class="flex flex-col space-y-3"></div>
-  </div>
+    <div id="firstQuestionBox" class="hidden p-6 max-w-lg">
+        <h2 class="text-xl font-semibold mb-6 text-gray-800">한글로 이름을 입력해주세요.</h2>
+        <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요." class="w-full p-3 border border-gray-300 rounded-md mb-4 text-center">
+        <button onclick="checkFirstAnswer()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">다음</button>
+        <p id="firstQuestionMessage" class="mt-4 text-red-500"></p>
+    </div>
 
-  <div id="resultBox" class="hidden p-6 max-w-lg">
-    <h2 id="resultTitle" class="text-2xl font-bold mb-4 text-pink-600"></h2>
-    <p id="resultDesc" class="mb-4 text-gray-700"></p>
-    <img id="resultImg" class="mx-auto w-40 h-40 object-contain" />
-    <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
-  </div>
+    <div id="questionBox" class="hidden p-6 max-w-lg">
+        <h2 id="question" class="text-xl font-semibold mb-6 text-gray-800"></h2>
+        <div id="answers" class="flex flex-col space-y-3"></div>
+    </div>
 
-  <script>
-    const questions = [
-      {
-        question: "데이트할 때 더 좋은 건?",
-        answers: [
-          { text: "활동적인 데이트 (놀이공원, 운동 등)", type: "A" },
-          { text: "잔잔한 데이트 (카페, 산책 등)", type: "B" }
-        ]
-      },
-      {
-        question: "연애할 때 나는?",
-        answers: [
-          { text: "먼저 연락하는 편", type: "A" },
-          { text: "기다리는 편", type: "B" }
-        ]
-      },
-      {
-        question: "이상형을 고를 때 더 중요한 것은?",
-        answers: [
-          { text: "외모!", type: "C" },
-          { text: "성격!", type: "D" }
-        ]
-      },
-      {
-        question: "애인이 연락이 안될 때 나는?",
-        answers: [
-          { text: "걱정되며 계속 연락한다", type: "A" },
-          { text: "기다리며 상황을 지켜본다", type: "B" }
-        ]
-      },
-      {
-        question: "연애에서 나는 더 많이?",
-        answers: [
-          { text: "주는 편이다", type: "C" },
-          { text: "받는 편이다", type: "D" }
-        ]
-      }
-    ];
+    <div id="wrongAnswerBox" class="hidden p-6 max-w-lg">
+        <h2 class="text-2xl font-bold mb-4 text-red-600">대상이 아닙니다</h2>
+        <p class="mb-6 text-gray-700">죄송하지만 이 테스트는 해당하지 않습니다.</p>
+        <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
+    </div>
 
-    const results = {
-      A: {
-        title: "열정적인 연애파",
-        desc: "당신은 사랑에 빠지면 열정적으로 몰입하는 스타일입니다. 표현을 잘하고, 애정도 풍부해요!",
-        img: "images/love_active.png"
-      },
-      B: {
-        title: "신중한 연애파",
-        desc: "당신은 조용히 상대를 배려하는 연애를 선호해요. 섬세하고 안정감을 주는 스타일입니다.",
-        img: "images/love_calm.png"
-      },
-      C: {
-        title: "낭만주의 연애파",
-        desc: "당신은 로맨틱한 상황과 외적인 매력에 끌리는 스타일이에요. 분위기를 중요시합니다.",
-        img: "images/love_romantic.png"
-      },
-      D: {
-        title: "현실적인 연애파",
-        desc: "당신은 신뢰와 대화, 성격의 조화를 중시하는 타입이에요. 안정적인 관계를 추구합니다.",
-        img: "images/love_practical.png"
-      }
-    };
+    <div id="resultBox" class="hidden p-6 max-w-lg">
+        <h2 id="resultTitle" class="text-2xl font-bold mb-4 text-pink-600"></h2>
+        <p id="resultDesc" class="mb-4 text-gray-700"></p>
+        <img id="resultImg" class="mx-auto w-40 h-40 object-contain" />
+        <button onclick="location.reload()" class="mt-6 bg-gray-500 text-white px-4 py-2 rounded">다시 하기</button>
+    </div>
 
-    let current = 0;
-    let answersCount = {};
+    <script>
+        const questions = [
+            // 기존 첫 번째 질문은 첫 질문 박스로 이동되었으므로 여기서부터는 두 번째 질문부터 시작합니다.
+            {
+                question: "데이트할 때 더 좋은 건?",
+                answers: [
+                    { text: "활동적인 데이트 (놀이공원, 운동 등)", type: "A" },
+                    { text: "잔잔한 데이트 (카페, 산책 등)", type: "B" }
+                ]
+            },
+            {
+                question: "연애할 때 나는?",
+                answers: [
+                    { text: "먼저 연락하는 편", type: "A" },
+                    { text: "기다리는 편", type: "B" }
+                ]
+            },
+            {
+                question: "이상형을 고를 때 더 중요한 것은?",
+                answers: [
+                    { text: "외모!", type: "C" },
+                    { text: "성격!", type: "D" }
+                ]
+            },
+            {
+                question: "애인이 연락이 안될 때 나는?",
+                answers: [
+                    { text: "걱정되며 계속 연락한다", type: "A" },
+                    { text: "기다리며 상황을 지켜본다", type: "B" }
+                ]
+            },
+            {
+                question: "연애에서 나는 더 많이?",
+                answers: [
+                    { text: "주는 편이다", type: "C" },
+                    { text: "받는 편이다", type: "D" }
+                ]
+            }
+        ];
 
-    function startTest() {
-      document.getElementById('start').classList.add('hidden');
-      document.getElementById('questionBox').classList.remove('hidden');
-      showQuestion();
-    }
+        const results = {
+            A: {
+                title: "열정적인 연애파",
+                desc: "당신은 사랑에 빠지면 열정적으로 몰입하는 스타일입니다. 표현을 잘하고, 애정도 풍부해요!",
+                img: "images/love_active.png"
+            },
+            B: {
+                title: "신중한 연애파",
+                desc: "당신은 조용히 상대를 배려하는 연애를 선호해요. 섬세하고 안정감을 주는 스타일입니다.",
+                img: "images/love_calm.png"
+            },
+            C: {
+                title: "낭만주의 연애파",
+                desc: "당신은 로맨틱한 상황과 외적인 매력에 끌리는 스타일이에요. 분위기를 중요시합니다.",
+                img: "images/love_romantic.png"
+            },
+            D: {
+                title: "현실적인 연애파",
+                desc: "당신은 신뢰와 대화, 성격의 조화를 중시하는 타입이에요. 안정적인 관계를 추구합니다.",
+                img: "images/love_practical.png"
+            }
+        };
 
-    function showQuestion() {
-      const q = questions[current];
-      document.getElementById('question').innerText = q.question;
-      const answerBox = document.getElementById('answers');
-      answerBox.innerHTML = '';
+        let currentQuestionIndex = 0; // 질문 인덱스
+        let answersCount = {}; // 답변 타입 카운트
 
-      q.answers.forEach(a => {
-        const btn = document.createElement('button');
-        btn.innerText = a.text;
-        btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100';
-        btn.onclick = () => selectAnswer(a.type);
-        answerBox.appendChild(btn);
-      });
-    }
+        // 테스트 시작 함수
+        function startTest() {
+            document.getElementById('start').classList.add('hidden');
+            // 첫 번째 질문 (메밀 입력) 박스를 보여줍니다.
+            document.getElementById('firstQuestionBox').classList.remove('hidden');
+        }
 
-    function selectAnswer(type) {
-      answersCount[type] = (answersCount[type] || 0) + 1;
-      current++;
-      if (current < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
-    }
+        // 첫 번째 질문 (메밀) 확인 함수
+        function checkFirstAnswer() {
+            const userAnswer = document.getElementById('firstAnswerInput').value.trim();
+            const messageElement = document.getElementById('firstQuestionMessage');
 
-    function showResult() {
-      document.getElementById('questionBox').classList.add('hidden');
-      document.getElementById('resultBox').classList.remove('hidden');
+            if (userAnswer.toLowerCase() === "조아라") { // 소문자 '메밀'도 허용
+                document.getElementById('firstQuestionBox').classList.add('hidden');
+                document.getElementById('questionBox').classList.remove('hidden');
+                currentQuestionIndex = 0; // 본 질문 배열의 첫 질문부터 시작
+                showQuestion();
+            } else {
+                messageElement.textContent = "틀렸습니다. 다시 시도해주세요.";
+                setTimeout(() => {
+                    document.getElementById('firstQuestionBox').classList.add('hidden');
+                    document.getElementById('wrongAnswerBox').classList.remove('hidden');
+                }, 1000); // 1초 후 오답 페이지로 이동
+            }
+        }
 
-      const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
-      const result = results[resultType];
+        // 일반 질문 표시 함수
+        function showQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById('question').innerText = q.question;
+            const answerBox = document.getElementById('answers');
+            answerBox.innerHTML = ''; // 이전 답변 버튼 제거
 
-      document.getElementById('resultTitle').innerText = result.title;
-      document.getElementById('resultDesc').innerText = result.desc;
-      document.getElementById('resultImg').src = result.img;
-    }
-  </script>
+            q.answers.forEach(a => {
+                const btn = document.createElement('button');
+                btn.innerText = a.text;
+                btn.className = 'bg-white border px-4 py-2 rounded shadow hover:bg-pink-100';
+                btn.onclick = () => selectAnswer(a.type);
+                answerBox.appendChild(btn);
+            });
+        }
+
+        // 답변 선택 함수
+        function selectAnswer(type) {
+            answersCount[type] = (answersCount[type] || 0) + 1;
+            currentQuestionIndex++; // 다음 질문으로 이동
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResult(); // 모든 질문 완료 시 결과 표시
+            }
+        }
+
+        // 결과 표시 함수
+        function showResult() {
+            document.getElementById('questionBox').classList.add('hidden');
+            document.getElementById('resultBox').classList.remove('hidden');
+
+            // 가장 많이 선택된 타입 찾기
+            const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
+            const result = results[resultType];
+
+            document.getElementById('resultTitle').innerText = result.title;
+            document.getElementById('resultDesc').innerText = result.desc;
+            document.getElementById('resultImg').src = result.img;
+        }
+    </script>
 </body>
 </html>
