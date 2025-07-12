@@ -7,13 +7,48 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .hidden { display: none; }
+        /* 시작 페이지 배경 이미지 스타일 */
+        #start {
+            background-image: url('images/start_background.jpg'); /* 여기에 배경 이미지 경로를 넣어주세요 */
+            background-size: cover;
+            background-position: center;
+            display: flex; /* Flexbox를 사용하여 내용 중앙 정렬 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh; /* 전체 화면 높이 */
+            color: white; /* 텍스트 색상을 이미지에 맞춰 조정 */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 텍스트 가독성을 높이기 위한 그림자 */
+        }
+        /* 플로팅 버튼 스타일 */
+        #start .floating-button {
+            background-color: white; /* 흰색 배경 */
+            color: #ef4444; /* 핑크색 텍스트 (tailwindcss pink-500) */
+            padding: 1rem 2.5rem; /* 패딩 증가 */
+            border-radius: 9999px; /* 완전한 원형 (pill shape) */
+            font-size: 1.25rem; /* 글자 크기 증가 */
+            font-weight: bold; /* 글자 두껍게 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* 그림자 추가 */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            margin-top: 2rem; /* 이미지와 버튼 사이 간격 */
+        }
+        #start .floating-button:hover {
+            transform: translateY(-5px); /* 호버 시 살짝 위로 뜨는 효과 */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* 호버 시 그림자 진하게 */
+        }
+        /* 기존 body 스타일은 유지 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
     </style>
 </head>
 <body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
     <div id="start" class="p-6">
-        <h1 class="text-3xl font-bold text-pink-600 mb-4">나와 짝꿍의 궁합은?</h1>
-        <p class="mb-4 text-gray-700">10개의 질문으로 알아보는 당신의 연애 스타일!</p>
-        <button onclick="startTest()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">시작하기</button>
+        <h1 class="text-4xl font-bold mb-4">나와 짝꿍의 궁합은?</h1>
+        <p class="text-lg mb-8">10개의 질문으로 알아보는 당신의 연애 스타일!</p>
+        <button onclick="startTest()" class="floating-button">시작하기</button>
     </div>
 
     <div id="firstQuestionBox" class="hidden p-6 max-w-lg">
@@ -43,7 +78,6 @@
 
     <script>
         const questions = [
-            // 기존 첫 번째 질문은 첫 질문 박스로 이동되었으므로 여기서부터는 두 번째 질문부터 시작합니다.
             {
                 question: "데이트할 때 더 좋은 건?",
                 answers: [
@@ -110,22 +144,22 @@
         // 테스트 시작 함수
         function startTest() {
             document.getElementById('start').classList.add('hidden');
-            // 첫 번째 질문 (메밀 입력) 박스를 보여줍니다.
             document.getElementById('firstQuestionBox').classList.remove('hidden');
         }
 
-        // 첫 번째 질문 (메밀) 확인 함수
+        // 첫 번째 질문 (이름) 확인 함수
         function checkFirstAnswer() {
             const userAnswer = document.getElementById('firstAnswerInput').value.trim();
             const messageElement = document.getElementById('firstQuestionMessage');
 
-            if (userAnswer.toLowerCase() === "조아라") { // 소문자 '메밀'도 허용
+            // 이름을 '조아라'로 설정했습니다. 필요에 따라 변경하세요.
+            if (userAnswer === "조아라") {
                 document.getElementById('firstQuestionBox').classList.add('hidden');
                 document.getElementById('questionBox').classList.remove('hidden');
                 currentQuestionIndex = 0; // 본 질문 배열의 첫 질문부터 시작
                 showQuestion();
             } else {
-                messageElement.textContent = "틀렸습니다. 다시 시도해주세요.";
+                messageElement.textContent = "입력하신 이름으로는 테스트를 진행할 수 없습니다.";
                 setTimeout(() => {
                     document.getElementById('firstQuestionBox').classList.add('hidden');
                     document.getElementById('wrongAnswerBox').classList.remove('hidden');
