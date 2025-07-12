@@ -20,7 +20,7 @@
         }
 
         /* Style for the question box to make it stand out over the background */
-        #questionBox, #resultBox {
+        #questionBox {
             background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
             padding: 2rem;
             border-radius: 1rem;
@@ -158,11 +158,12 @@
                 const resultEntries = Object.entries(answersCount);
                 const resultType = resultEntries.length > 0 ? resultEntries.sort((a,b) => b[1] - a[1])[0][0] : 'B';
                 
-                // Store the result type in localStorage for the new page to retrieve
-                localStorage.setItem('quizResultType', resultType);
-
-                // Redirect to the result page
-                window.location.href = 'result.html';
+                // Redirect based on the result type
+                if (resultType === 'A') {
+                    window.location.href = 'result_a.html';
+                } else {
+                    window.location.href = 'result_b.html';
+                }
             }
         }
 
