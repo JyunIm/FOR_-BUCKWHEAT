@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>짝꿍 궁합 테스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden { display: none; }
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #resultBox {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 1rem;
+            width: 90%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
+        /* Modal specific styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .copy-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body class="text-center">
+    <div id="resultBox" class="p-6 max-w-lg">
+        <h2 id="resultTitle" class="text-3xl font-bold mb-4 text-pink-600"></h2>
+        <p id="resultDesc" class="text-lg mb-6 text-gray-700"></p>
+        <img id="resultImg" class="mx-auto w-48 h-48 object-contain mb-6" alt="Result Image" />
+        <button id="resultActionButton" class="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 text-lg font-semibold transition duration-200 ease-in-out transform hover:scale-105"></button>
+    </div>
+
+    <div id="shareModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeShareModal()">&times;</span>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">결과 공유하기</h3>
+            <p class="text-md mb-4 text-gray-700">아래 버튼을 눌러 결과를 복사해서 짝꿍한테 알려주세요.</p>
+            <button class="copy-button w-full" onclick="copyResultToClipboard()">클립보드에 복사</button>
+        </div>
+    </div>
+    
+    <script>
+
+        const results = {
+            A: {
+                title: "너는 내 짝꿍 🥰",
+                desc: "당신의 짝꿍이 결혼해달라고 합니다. 짝꿍과 결혼해 주실 건가요?",
+                img: "image/marry.png"
+            },
+            B: {
+                title: "당신은 메밀이 맞나요? 🤔",
+                desc: "아무래도 내가 알던 그 메밀이 아닌 것 같아요... 다시 한번 해보시겠어요?"
+            }
+        };
+
+        let currentResultType = ''; // To store the retrieved result type
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Retrieve the result type from localStorage
+            currentResultType = localStorage.getItem('quizResultType');
+            
+            if (currentResultType) {
+                displayResult(currentResultType);
+            } else {
+                // Fallback if no result type is found (e.g., accessed directly)
+                displayResult('B'); // Default to B or redirect back to index.html
+                console.warn("No quiz result found in localStorage. Displaying default or redirecting.");
+                // Optionally, redirect back to the quiz start:
+                window.location.href = 'index.html';
+            }
+        });
+
+        function displayResult(resultType) {
+            const result = results[resultType];
+            const resultActionButton = document.getElementById('resultActionButton');
+
+            document.getElementById('resultTitle').innerText = result.title;
+            document.getElementById('resultDesc').innerText = result.desc;
+            document.getElementById('resultImg').src = result.img;
+
+            if (resultType === 'A') {
+                resultActionButton.innerText = "결과 공유하기";
+                resultActionButton.onclick = openShareModal;
+            } else {
+                resultActionButton.innerText = "다시 하기";
+                // Go back to the quiz page (index.html)
+                resultActionButton.onclick = () => window.location.href = 'index.html'; 
+            }
+        }
+
+        function openShareModal() {
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+
+        async function copyResultToClipboard() {
+            const resultTitle = document.getElementById('resultTitle').innerText;
+            const resultDesc = document.getElementById('resultDesc').innerText;
+            // Use window.location.origin to get the base URL for the quiz page
+            const quizUrl = window.location.origin + '/index.html'; 
+            const shareText = `[짝꿍 궁합 테스트 결과]\n짝꿍이 당신과의 결혼을 좋아합니다.`;
+
+            try {
+                await navigator.clipboard.writeText(shareText);
+                alert("결과가 클립보드에 복사되었습니다!");
+                closeShareModal();
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert("결과 복사에 실패했습니다.");
+            }
+        }
+    </script>
+</body>
+</html>
