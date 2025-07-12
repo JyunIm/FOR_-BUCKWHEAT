@@ -34,7 +34,7 @@
 </head>
 <body class="text-center">
     <div id="questionBox" class="p-6 max-w-lg">
-        <h2 id="question" class="text-2xl font-bold mb-8 text-gray-800 whitespace-pre-line"></h2>
+        <h2 id="question" class="text-xl font-bold mb-8 text-gray-800 whitespace-pre-line"></h2>
         <div id="answers" class="flex flex-row flex-wrap justify-center gap-4"></div> </div>
 
     <div id="resultBox" class="hidden p-6 max-w-lg">
@@ -47,38 +47,24 @@
     <script>
         const questions = [
             {
-                question: "소개팅을 받고 상대와 처음 만나게 된 당신.\n설렘과 어색함을 가지고 첫 만남 장소를 결정해야 되는데, 어디서 만나는 것이 좋은가요?",
+                question: "소개팅을 받고 상대와 처음 만나게 된 당신.\n설렘과 어색함을 가지고 첫 만남 장소를 결정해야 되는데, 어디서 만나는 것이 좋을까요?",
                 answers: [
                     { text: "아쿠아리움", type: "A", image: "image/aquarium.png" },
                     { text: "산 정상", type: "B", image: "image/mountain.png" }
                 ]
             },
             {
-                question: "소개팅 상대와 연애를 시작하게 된 당신.\n오늘은 처음으로 커플 아이템을 맞추기로 했습니다. 어떤 것이 좋을까요?",
+                question: "소개팅 상대와 연애를 시작하게 된 당신.\n오늘은 커플 아이템을 맞추기로 했습니다. 어떤 것이 좋을까요?",
                 answers: [
                     { text: "돈이 최고, 커플 아이템 대신 현금", type: "B", image: "image/money.png" },
                     { text: "직접 만든 나무 반지", type: "A", image: "image/ring.png" }
                 ]
             },
             {
-                question: "짝꿍과 연말에 1박 2일로 여행을 가기로 했습니다. 처음으로 같이 보내는 연말을 어떻게 보내고 싶으신가요?",
+                question: "짝꿍과 연말에 1박 2일로 여행을 가기로 했습니다.\n같이 보내는 연말을 어떻게 보내고 싶으신가요?",
                 answers: [
                     { text: "커플잠옷을 입고 기념 사진을 찍는다.", type: "A", image: "image/couple_cloth.png" },
                     { text: "연말이 대수인가. 그냥 잔다.", type: "B", image: "image/sleep.png" }
-                ]
-            },
-            {
-                question: "벚꽃이 활짝 핀 봄이 왔습니다. 짝꿍이 데이트를 하자고 하는데, 무슨 데이트인가요?",
-                answers: [
-                    { text: "꽃은 매해 피고 진다. 영화나 본다.", type: "B", image: "image/movie.png" },
-                    { text: "낭만 가득한 벚꽃 구경.", type: "A", image: "image/blossoms.png" }
-                ]
-            },
-            {
-                question: "짝꿍이 치킨을 시킨 후 당신에게 한 조각을 건냅니다. 어떤 부위인가요?",
-                answers: [
-                    { text: "닭가슴살", type: "B", image: "image/chicken_neck.png" },
-                    { text: "닭다리", type: "A", image: "image/chicken_leg.png" }
                 ]
             },
             {
@@ -89,10 +75,45 @@
                 ]
             },
             {
-                question: "짝꿍과 결혼을 결심하게 된 당신, 두근두근 신혼여행지를 결정해야 합니다. 어디가 좋을까요?",
+                question: "벚꽃이 활짝 핀 봄이 왔습니다.\n짝꿍이 데이트를 하자고 하는데, 무슨 데이트인가요?",
+                answers: [
+                    { text: "꽃은 매해 피고 진다. 영화나 본다.", type: "B", image: "image/movie.png" },
+                    { text: "낭만 가득한 벚꽃 구경.", type: "A", image: "image/blossoms.png" }
+                ]
+            },
+            {
+                question: "일본으로 해외여행을 가자고 짝꿍이 제안합니다.\n당신의 선택은?",
+                answers: [
+                    { text: "해외여행은 무슨 너무 귀찮다...", type: "B", image: "image/no_trip.png" },
+                    { text: "같이 해외여행이라니 너무 설레...", type: "A", image: "image/japan_trip.png" }
+                ]
+            },
+            {
+                question: "같이 등산을 보고 싶다며 산으로 끌고 가는 짝꿍.\n어떤 생각이 드시나요?",
+                answers: [
+                    { text: "힘들겠지만, 짝꿍과 함께라면 등산도 괜찮아!", type: "A", image: "image/tracking.png" },
+                    { text: "등산이라니, 땀나고 힘들고 최악이야!", type: "B", image: "image/lazy.png" }
+                ]
+            },
+            {
+                question: "짝꿍과 결혼을 결심한 당신. 신혼여행지를 결정해야 합니다.\n어디가 좋을까요?",
                 answers: [
                     { text: "신혼여행하면 휴양지! 하와이로 가자!", type: "A", image: "image/hawaii.png" },
                     { text: "더운건 싫어! 시원한 남극!", type: "B", image: "image/antarctica.png" }
+                ]
+            },
+            {
+                question: "대망의 웨딩촬영날, 한껏 꾸민 짝꿍을 보고 어떤 생각이 드시나요?",
+                answers: [
+                    { text: "꾸며도 오징어네.. 너무 못생겼어!", type: "B", image: "image/hate.png" },
+                    { text: "완전 귀여워.. 이 사람이 내 남편이라니 너무 좋아!", type: "A", image: "image/like.png" }
+                ]
+            },
+            {
+                question: "신혼집에 입주하고 첫날밤. 기분이 어떠신가요?",
+                answers: [
+                    { text: "드디어 저녁에도 같이 있을 수 있어! 완전 좋아!", type: "A", image: "image/love_it.png" },
+                    { text: "아! 쫌! 떨어져 있어라! 귀찮다!", type: "B", image: "image/omg.png" }
                 ]
             }
         ];
@@ -124,14 +145,14 @@
 
             q.answers.forEach(a => {
                 const btn = document.createElement('button');
-                btn.className = 'bg-white border px-4 py-3 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105 w-40 sm:w-48';
+                btn.className = 'bg-white border px-6 py-4 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105 w-48 sm:w-56';
                 btn.onclick = () => selectAnswer(a.type);
                 
                 if (a.image) { 
                     const img = document.createElement('img');
                     img.src = a.image;
                     img.alt = a.text;
-                    img.className = 'w-24 h-24 object-contain mb-2'; 
+                    img.className = 'w-28 h-28 object-contain mb-2'; 
                     btn.appendChild(img);
                 }
 
