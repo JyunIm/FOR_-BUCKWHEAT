@@ -61,9 +61,23 @@
                 ]
             },
             {
+                question: "짝꿍과 연말에 1박 2일로 여행을 가기로 했습니다. 처음으로 같이 보내는 연말을 어떻게 보내고 싶으신가요?",
+                answers: [
+                    { text: "커플잠옷을 입고 기념 사진을 찍는다.", type: "A", image: "image/couple_cloth.png" },
+                    { text: "연말이 대수인가. 그냥 잔다.", type: "B", image: "image/sleep.png" }
+                ]
+            },
+            {
+                question: "벚꽃이 활짝 핀 봄이 왔습니다. 짝꿍이 데이트를 하자고 하는데, 무슨 데이트인가요?",
+                answers: [
+                    { text: "꽃은 매해 피고 진다. 영화나 본다.", type: "B", image: "image/movie.png" },
+                    { text: "낭만 가득한 벚꽃 구경.", type: "A", image: "image/blossoms.png" }
+                ]
+            },
+            {
                 question: "짝꿍이 치킨을 시킨 후 당신에게 한 조각을 건냅니다. 어떤 부위인가요?",
                 answers: [
-                    { text: "닭목", type: "B", image: "image/chicken_neck.png" },
+                    { text: "닭가슴살", type: "B", image: "image/chicken_neck.png" },
                     { text: "닭다리", type: "A", image: "image/chicken_leg.png" }
                 ]
             },
@@ -110,7 +124,7 @@
 
             q.answers.forEach(a => {
                 const btn = document.createElement('button');
-                btn.className = 'bg-white border px-4 py-3 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105 w-full md:w-[calc(50%-0.5rem)]';
+                btn.className = 'bg-white border px-4 py-3 rounded shadow hover:bg-pink-100 flex flex-col items-center justify-center space-y-2 text-gray-800 transition duration-200 ease-in-out transform hover:scale-105 w-40 sm:w-48';
                 btn.onclick = () => selectAnswer(a.type);
                 
                 if (a.image) { 
@@ -123,7 +137,7 @@
 
                 const textSpan = document.createElement('span');
                 textSpan.innerText = a.text;
-                textSpan.className = 'font-semibold text-lg'; // Adjust text size as needed
+                textSpan.className = 'font-semibold text-sm text-center'; // Adjust text size as needed
                 btn.appendChild(textSpan);
                 
                 answerBox.appendChild(btn);
