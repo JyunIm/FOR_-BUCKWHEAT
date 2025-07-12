@@ -8,20 +8,23 @@
     <style>
         .hidden { display: none; }
         /* 시작 페이지 배경 이미지 스타일 */
-        #start {
-            background-image: url('image/intro_image.png'); /* 여기에 배경 이미지 경로를 넣어주세요 */
+        body {
+            font-family:Arial, sans-serif;
+            margin: 0;
+            background-image: url('image/intro_image.png');
             background-size: cover;
             background-position: center;
-            display: flex; /* Flexbox를 사용하여 내용 중앙 정렬 */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
-            width: 100%;
-            min-height: 100vh; /* 전체 화면 높이 */
-            color: white; /* 텍스트 색상을 이미지에 맞춰 조정 */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 텍스트 가독성을 높이기 위한 그림자 */
-            padding-bottom: 2rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
+
         /* 수정된 버튼 스타일 */
         #start .start-button {
             background-color: white; /* 흰색 배경 */
@@ -40,15 +43,16 @@
             transform: translateY(-5px); /* 호버 시 살짝 위로 뜨는 효과 */
             box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* 호버 시 그림자 진하게 */
         }
-        /* 기존 body 스타일은 유지 */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
+        #firstQuestionBox {
+            background-color: rgba(255,255,255,0.9);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body class="bg-pink-50 text-center min-h-screen flex flex-col justify-center items-center">
-    <div id="firstQuestionBox" class="hidden p-6 max-w-lg">
+    <div id="firstQuestionBox" class="p-6 max-w-lg">
         <h2 class="text-xl font-semibold mb-6 text-gray-800">한글로 이름을 입력해주세요.</h2>
         <input type="text" id="firstAnswerInput" placeholder="이름을 입력해주세요." class="w-full p-3 border border-gray-300 rounded-md mb-4 text-center">
         <button onclick="checkFirstAnswer()" class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600">다음</button>
