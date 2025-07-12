@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>심리테스트</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="bg-gray-100 text-center min-h-screen flex flex-col justify-center items-center">
+  <div id="start" class="p-6">
+    <h1 class="text-3xl font-bold mb-4">나의 성격 유형은?</h1>
+    <p class="mb-4">간단한 심리테스트를 통해 알아보세요!</p>
+    <button onclick="startTest()" class="bg-blue-500 text-white px-4 py-2 rounded">테스트 시작하기</button>
+  </div>
+
+  <div id="questionBox" class="hidden p-6 max-w-md">
+    <h2 id="question" class="text-xl font-semibold mb-6"></h2>
+    <div id="answers" class="flex flex-col space-y-3"></div>
+  </div>
+
+  <div id="resultBox" class="hidden p-6 max-w-md">
+    <h2 id="resultTitle" class="text-2xl font-bold mb-4"></h2>
+    <p id="resultDesc" class="mb-4"></p>
+    <img id="resultImg" class="mx-auto w-32 h-32" />
+    <button onclick="location.reload()" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">다시 하기</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "당신은 주말에 무엇을 하나요?",
+        answers: [
+          { text: "사람들과 어울린다", type: "E" },
+          { text: "혼자만의 시간을 보낸다", type: "I" }
+        ]
+      },
+      {
+        question: "문제를 해결할 때 나는...",
+        answers: [
+          { text: "현실적 방법을 선호한다", type: "S" },
+          { text: "직관과 영감을 따른다", type: "N" }
+        ]
+      }
+    ];
+
+    const results = {
+      E: {
+        title: "외향적인 리더",
+        desc: "당신은 사람들과 어울리는 걸 좋아하는 활발한 성격입니다!",
+        img: "https://via.placeholder.com/150"
+      },
+      I: {
+        title: "내향적인 사색가",
+        desc: "당신은 혼자서 깊이 생각하는 시간을 즐기는 편입니다.",
+        img: "https://via.placeholder.com/150"
+      },
+      S: {
+        title: "현실적인 분석가",
+        desc: "당신은 문제를 구체적으로 파악하고 해결합니다.",
+        img: "https://via.placeholder.com/150"
+      },
+      N: {
+        title: "직관적인 창의가",
+        desc: "당신은 새로운 아이디어를 떠올리길 좋아합니다!",
+        img: "https://via.placeholder.com/150"
+      }
+    };
+
+    let current = 0;
+    let answersCount = {};
+
+    function startTest() {
+      document.getElementById('start').classList.add('hidden');
+      document.getElementById('questionBox').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById('question').innerText = q.question;
+      const answerBox = document.getElementById('answers');
+      answerBox.innerHTML = '';
+
+      q.answers.forEach(a => {
+        const btn = document.createElement('button');
+        btn.innerText = a.text;
+        btn.className = 'bg-white border px-4 py-2 rounded shadow';
+        btn.onclick = () => selectAnswer(a.type);
+        answerBox.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(type) {
+      answersCount[type] = (answersCount[type] || 0) + 1;
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('questionBox').classList.add('hidden');
+      document.getElementById('resultBox').classList.remove('hidden');
+
+      // 가장 많이 선택된 타입을 기준으로 결과 도출
+      const resultType = Object.entries(answersCount).sort((a,b) => b[1] - a[1])[0][0];
+      const result = results[resultType];
+
+      document.getElementById('resultTitle').innerText = result.title;
+      document.getElementById('resultDesc').innerText = result.desc;
+      document.getElementById('resultImg').src = result.img;
+    }
+  </script>
+</body>
+</html>
